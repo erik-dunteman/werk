@@ -47,8 +47,7 @@ If not using docker, follow [these instructions](https://redis.io/topics/quickst
 
 The `worker` folder contains the code to start a worker. Run:
 ```bash
-cd worker
-go run worker.go
+go run worker/worker.go
 ```
 
 #### 3) Start one (or more) callers
@@ -56,8 +55,7 @@ go run worker.go
 The `caller` folder contains the code to start the caller. 
 In this repo, it will place a new task into the queue, briefly wait for the worker to finish, and retrieve the output.
 ```bash
-cd caller
-go run caller.go
+go run caller/caller.go
 ```
 
 ## How to add tasks to Werk
@@ -78,7 +76,7 @@ Second, register that task for caller/worker use by adding it to the Tasks map:
 // Define the tasks for external use
 var Tasks = map[string]interface{}{
 	"sleep": sleepHandler,
-	"panic": panicHandler,
+	"hello": helloHandler,
 	"xyz": xyzHandler, // remember the name "xyz", that's how we call this task later.
 }
 ```
@@ -92,7 +90,6 @@ You can optionally edit server behavior (timeouts, redis endpoint, etc) in `conf
 Call a newly defined task
 ```go
 // xyz
-thisTask := machine.InitTask()
 thisTask := tasks.Signature{
 	Name: "xyz", // must be same task name as in machine.Tasks
 	Args: []tasks.Arg{ // send in the task handler arguments here. In this case, it's just one int.
