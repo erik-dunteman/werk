@@ -13,7 +13,7 @@ An asynchronous task queue uses a central message datastore (in this case, [Redi
 
 Some http server tasks take longer than a single http request, so you need to instead start the task, run it in the background, and retrieve the output in the future. 
 
-In horizintally scaled systems, there's no guarantee that the load balancer will hit the same server instance when the client attempts to retrieve the output of a particular task.
+In horizontally scaled systems, there's no guarantee that the load balancer will hit the same server instance when the client attempts to retrieve the output of a particular task. This is bad.
 
 Using Redis to register tasks ensures that all http servers (the "callers") and the distributed "workers" can see all of the tasks, regardless of how many replicates are running.
 
